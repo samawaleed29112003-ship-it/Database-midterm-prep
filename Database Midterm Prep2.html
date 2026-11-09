@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Database Midterm Prep</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f4f8f6;--card:#fff;--tx:#17302b;--mu:#587069;--ac:#1d7a63;--ok:#1b8a4b;--no:#c0392b;--bd:#d5e3de;--cd:#eaf3ef;color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1c19;--card:#172823;--tx:#e6f1ed;--mu:#9bb5ad;--ac:#4cc3a3;--ok:#4cc77d;--no:#ff7b6b;--bd:#2a413b;--cd:#10201c;color-scheme:dark}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:760px;margin:0 auto;padding:12px}
+h1{font-size:1.3rem;margin:4px 0 10px}
+nav{display:flex;gap:6px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:6px 0;z-index:5}
+nav button,.btn{flex:1;border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:9px 6px;border-radius:10px;font:inherit;font-size:.9rem;cursor:pointer}
+nav button.on,.btn.p{background:var(--ac);color:#fff;border-color:var(--ac)}
+.btn{flex:none;padding:8px 14px;margin:4px 6px 0 0}
+select{font:inherit;padding:8px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);max-width:100%}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;margin:10px 0}
+.tag{font-size:.72rem;color:var(--mu);text-transform:uppercase;letter-spacing:.04em}
+.q{font-weight:600;margin:4px 0 8px;white-space:pre-wrap}
+pre{background:var(--cd);border-radius:8px;padding:10px;overflow-x:auto;font:.85rem/1.45 ui-monospace,Menlo,Consolas,monospace;margin:6px 0;white-space:pre}
+.opt{display:block;width:100%;text-align:left;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:10px;padding:9px 10px;margin:5px 0;font:inherit;cursor:pointer}
+.opt.sel{border-color:var(--ac);background:var(--cd)}
+.opt.ok{border-color:var(--ok);background:rgba(40,160,90,.15)}
+.opt.no{border-color:var(--no);background:rgba(220,70,50,.15)}
+.why{color:var(--mu);font-size:.9rem;margin-top:6px;white-space:pre-wrap}
+.sc{font-size:1.6rem;font-weight:700;color:var(--ac)}
+.row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0}
+.hide{display:none}
+.ref h3{margin:14px 0 4px;color:var(--ac)}.ref p,.ref li{margin:3px 0}
+</style></head><body><main>
+<h1>Database Midterm Prep</h1>
+<nav id="nav"></nav><div id="v"></div>
+<script>
+const MC=[
+[1,"What is a DBMS?",["A collection of related data only","Software to store, retrieve and manage a database","A type of file system","A programming language"],1,"DBMS = software that creates, updates and retrieves data in an organized way, and gives security."],
+[1,"Which is a NoSQL DBMS?",["MySQL","Oracle","MongoDB","PostgreSQL"],2,"NoSQL examples: MongoDB, Cassandra, DynamoDB, Redis."],
+[1,"Storing the same data in many files causes:",["Atomicity","Data redundancy and inconsistency","Security","Physical independence"],1,"This is the first problem of file systems."],
+[1,"Transfer of money that must finish fully or not happen at all is:",["Isolation problem","Atomicity of updates","Redundancy","Data isolation"],1,"Atomicity = all or nothing."],
+[1,"Two people withdraw 50 from a balance of 100 at the same time. This shows a problem of:",["Concurrent access","Security","Redundancy","Views"],0,"Uncontrolled concurrent access gives wrong results."],
+[1,"Which level of abstraction is closest to the end user?",["Physical","Logical","View","Storage"],2,"View level is the highest. Physical is the lowest."],
+[1,"Which level describes tables, attributes and constraints?",["Physical level","Logical level","View level","Hardware level"],1,"Logical level = structure in logical terms."],
+[1,"The ability to change the physical schema without changing the logical schema is:",["Logical independence","Physical data independence","Atomicity","Normalization"],1,"Applications depend on the logical schema only."],
+[1,"The actual content of the database at one moment is the:",["Schema","Instance","Data model","Metadata"],1,"Schema is like a variable type. Instance is like its value."],
+[1,"Data about data is called:",["Instance","Metadata","Tuple","Domain"],1,"It is stored in the data dictionary, the output of DDL."],
+[1,"Which is NOT a DDL command?",["CREATE","ALTER","TRUNCATE","INSERT"],3,"INSERT is DML."],
+[1,"A language where the user says what data is needed, not how to get it:",["Procedural DML","Declarative DML","DCL","TCL"],1,"SQL is declarative (non-procedural)."],
+[1,"GRANT and REVOKE belong to:",["DDL","DML","DCL","TCL"],2,"DCL controls access permissions."],
+[1,"COMMIT, ROLLBACK and SAVEPOINT belong to:",["DDL","DQL","DCL","TCL"],3,"TCL = Transaction Control Language."],
+[1,"Which module interprets DDL statements and records them in the data dictionary?",["DML compiler","DDL interpreter","Buffer manager","File manager"],1,"DDL interpreter is part of the query processor."],
+[1,"Which component picks the lowest-cost evaluation plan?",["DML compiler (query optimization)","File manager","Buffer manager","DDL interpreter"],0,"DML compiler does query optimization."],
+[1,"The buffer manager:",["Checks permissions","Keeps data pages temporarily in memory","Runs transactions","Stores metadata"],1,"Storage manager parts: authorization and integrity, transaction, file, buffer managers."],
+[1,"Steps of query processing in order:",["Evaluation, optimization, parsing","Parsing and translation, optimization, evaluation","Optimization, parsing, evaluation","Parsing, evaluation, optimization"],1,"Parse, optimize, evaluate."],
+[1,"In three-tier architecture the client:",["Calls the database directly","Talks to an application server, with no direct database calls","Is the database server","Has no interface"],1,"Two-tier: client calls the server DB directly."],
+[1,"Which is a function of the DBA?",["Writing user forms","Schema definition and granting authorization","Designing hardware","Writing the OS"],1,"Also backups, monitoring jobs, free disk space."],
+[1,"Who defined the relational model?",["Stonebraker","Ted Codd","Oracle","IBM"],1,"Codd won the Turing Award (1981)."],
+[2,"The number of rows in a relation is its:",["Degree","Cardinality","Arity","Domain"],1,"Degree = number of attributes (columns)."],
+[2,"Attribute values are normally required to be:",["Null","Atomic (indivisible)","Ordered","Multiple"],1,"Also, tuples in a relation are unordered."],
+[2,"A minimal superkey is a:",["Foreign key","Candidate key","Composite key only","Null key"],1,"Superkey, then minimal, then candidate. One becomes the primary key."],
+[2,"{ID, name} for instructor is a:",["Candidate key","Superkey but not a candidate key","Primary key","Foreign key"],1,"{ID} alone is enough, so {ID, name} is not minimal."],
+[2,"dept_name in instructor referencing department is a:",["Primary key","Foreign key","Candidate key","Superkey of department"],1,"Referencing relation = instructor. Referenced = department."],
+[2,"NULL means:",["Zero","Empty string","Unknown or missing value","False"],2,"NULL is not zero and not an empty string."],
+[2,"Which is NOT one of the six basic relational algebra operators?",["Select","Project","Join","Rename"],2,"Basic six: select, project, union, set difference, Cartesian product, rename. Join is derived."],
+[2,"σ (sigma) selects:",["Columns","Rows that satisfy a predicate","Both","Relation names"],1,"π picks columns."],
+[2,"Does projection remove duplicate rows?",["Yes, relations are sets","No","Only with distinct","Only with union"],0,"In relational algebra, yes."],
+[2,"If r has m tuples and s has n tuples, r × s has:",["m + n","m × n","m − n","max(m,n)"],1,"Every row of r pairs with every row of s."],
+[2,"Union r ∪ s needs:",["Same arity and compatible domains","Same number of rows","Same names only","Nothing"],0,"Same for ∩ and −."],
+[2,"The join r ⋈θ s equals:",["σθ(r × s)","πθ(r × s)","r ∪ s","r − s"],0,"Select plus Cartesian product in one operation."],
+[2,"The assignment operator is written:",["←","ρ","σ","−"],0,"Used for temporary relation variables."],
+[2,"The rename operator is:",["ρ","π","σ","⋈"],0,"ρx(E) gives the result of E the name x."],
+[2,"σ dept='Physics' ∧ salary>90000 (instructor) and σ dept='Physics'(σ salary>90000(instructor)) are:",["Not equal","Equivalent","Both invalid","Different results"],1,"Not identical, but same result on any database."],
+[3,"Which type is variable length?",["char(n)","varchar(n)","int","date"],1,"char(n) is fixed length."],
+[3,"numeric(3,1) can store exactly:",["444.5","0.32","44.5","4445"],2,"3 digits total, 1 after the point."],
+[3,"Which clause matches the relational algebra projection?",["where","select","from","order by"],1,"from = Cartesian product, where = selection."],
+[3,"select distinct dept_name from instructor:",["Keeps duplicates","Removes duplicates","Sorts the result","Counts rows"],1,"Default is all (keep duplicates)."],
+[3,"What does name LIKE 'A_ar' match?",["Any string with ar","A, any one character, then ar","A at the start only","Exactly 3 letters"],1,"% = any number of characters. _ = exactly one character."],
+[3,"Default order by direction is:",["Descending","Ascending","Random","None"],1,"Use desc for descending."],
+[3,"select 'A' from instructor (N rows) returns:",["One row","N rows of A","Empty","An error"],1,"Without a table: one row only."],
+[3,"Primary key of works(person_name, company_name, salary) in the lecture:",["person_name","company_name","(person_name, company_name)","salary"],2,"Composite key. A person can work for many companies."],
+[4,"salary between 90000 and 100000 includes:",["Only inside values","Both end values","Only 90000","Only 100000"],1,"Same as >= 90000 AND <= 100000."],
+[4,"The result of 5 + null is:",["5","0","null","error"],2,"Arithmetic with null gives null."],
+[4,"null = null gives:",["true","false","unknown","1"],2,"Use is null. Unknown in WHERE is treated as false."],
+[4,"(true AND unknown) =",["true","false","unknown","null row"],2,"false AND unknown = false. unknown OR true = true."],
+[4,"Which aggregate does NOT exist in the lecture?",["avg","median","max","count"],1,"Lecture list: avg, min, max, sum, count."],
+[4,"Having is applied:",["Before groups are formed","After groups are formed","Before from","Never"],1,"WHERE is applied before grouping."],
+[4,"In select dept_name, ID, avg(salary) group by dept_name — the error is:",["No error","ID is not in group by","avg is wrong","Missing where"],1,"Non-aggregated select attributes must be in group by."],
+[4,"Set operations (union, intersect, except) by default:",["Keep duplicates","Remove duplicates","Sort descending","Fail"],1,"Use union all, intersect all, except all to keep duplicates."],
+[4,"(= some) is the same as:",["not in","in","all","exists"],1,"(<> all) is the same as not in."],
+[4,"5 < some {0,5,6} is:",["true","false","unknown","error"],0,"6 is greater than 5, so true."],
+[4,"5 < all {6,10} is:",["true","false","unknown","error"],0,"5 is less than every value."],
+[1,"Raw facts with no context are:",["Information","Data","Knowledge","Metadata"],1,"Data, then information (processed, with meaning), then knowledge (understanding from experience or analysis)."],
+[1,"Which is a database application from the lecture?",["Airline reservations","Compiler design","Image filters","Sorting"],0,"Also banking, universities, sales, HR, telecom, online retail, navigation systems."],
+[1,"DROP TABLE removes:",["Only the rows","Structure and rows","Only a column","Only permissions"],1,"TRUNCATE removes all rows but keeps the structure."],
+[1,"Which command removes all rows and keeps the table structure?",["DROP","TRUNCATE","ALTER","REVOKE"],1,"DROP deletes structure and rows."],
+[1,"Which SQL command saves all transactions to the database?",["ROLLBACK","SAVEPOINT","COMMIT","GRANT"],2,"ROLLBACK undoes unsaved changes. SAVEPOINT rolls back to a point."],
+[1,"The DDL compiler output is stored in the:",["Buffer","Data dictionary","Index only","Log"],1,"The data dictionary holds metadata."],
+[1,"Database design: who decides WHAT attributes to record?",["Business","Computer science","The DBA only","The OS"],0,"Computer science decides HOW to organize it in relation schemas."],
+[1,"Which architecture has: one server doing work for many client machines?",["Distributed","Client-server (centralized)","Shared nothing","Parallel"],1,"Parallel: shared memory, shared disk, shared nothing."],
+[1,"MERGE in DML is:",["Combine tables","Upsert (insert or update)","Delete rows","Grant"],1,"UPSERT = update if it exists, else insert."],
+[1,"Integrity constraints:",["Hide data","Keep data accurate and valid","Speed queries","Store backups"],1,"PRIMARY KEY, FOREIGN KEY, UNIQUE, NOT NULL, CHECK."],
+[2,"Which is a pure query language in the lecture?",["Relational algebra","Python","HTML","C"],0,"Pure languages: relational algebra, tuple and domain relational calculus. They have equal power."],
+[2,"Relational algebra is:",["Procedural","Declarative","Turing-complete","Graphical"],0,"It has 6 basic operations. Not Turing-equivalent."],
+[2,"The result of a relational algebra operation is:",["A number","A relation","A file","A key"],1,"So operations can be composed."],
+[2,"R = (A1, A2, ..., An) is a:",["Relation instance","Relation schema","Tuple","Domain"],1,"r(R) is an instance."],
+[2,"The domain of an attribute is:",["Its name","The set of allowed values","Its key","Its table"],1,"Null belongs to every domain."],
+[3,"Which SQL keyword corresponds to the Cartesian product?",["select","from","where","group by"],1,"from lists relations, giving the product."],
+[3,"To match the text 100% with LIKE you use:",["like '100%'","like '100 \\%' escape '\\'","like '100_'","like '%100'"],1,"The escape character removes the special meaning."],
+[3,"String concatenation in SQL uses:",["+","||","&","#"],1,"Also upper/lower, length, substring."],
+[3,"alter table r add A D gives existing rows the value:",["0","Empty string","null","Error"],2,"Dropping attributes is not supported by many databases."],
+[3,"SQL names are:",["Case sensitive","Case insensitive","Upper case only","Lower case only"],1,"Name = NAME = name. But string patterns in LIKE are case sensitive."],
+[3,"Which type needs a fixed length like a country code?",["varchar","char","float","numeric"],1,"varchar is for names and addresses."],
+[4,"count(*) counts:",["Distinct values","All rows","Only non-null salaries","Columns"],1,"count(distinct ID) counts different IDs."],
+[4,"Which gives the output Crick BIO-101 and BIO-301?",["Tuple comparison with 'Biology'","Any join","order by name","union"],0,"Biology instructor and their courses."],
+[4,"A subquery can be placed in:",["from, where and select","Only where","Only from","Nowhere"],0,"In select, it must return a single value."],
+[4,"(<> all) is the same as:",["in","not in","some","exists"],1,"And (= some) is in."],
+[4,"avg of salaries ignores:",["Zero","Null values","Big values","Nothing"],1,"Aggregates skip nulls (except count(*))."]
+];
+const ES=[
+["List the problems of keeping data in file systems. How does a database system solve them?","1) Data redundancy and inconsistency (same data in many files and formats).\n2) Difficulty accessing data (a new program for each new task).\n3) Data isolation (many files and formats).\n4) Integrity problems (constraints buried in program code, hard to change).\n5) Atomicity of updates (failures leave partial updates, e.g. money transfer).\n6) Concurrent access by many users (can give wrong results, e.g. two withdrawals).\n7) Security problems (hard to give access to some data only).\nA database system gives solutions to all of them."],
+["Explain the three levels of data abstraction.","Physical level: how a record is stored (files, indexes). Lowest level.\nLogical level: what data is stored and the relationships (tables, attributes, constraints). Users do not care about storage.\nView level: highest level, closest to users. Each user sees a customized view of the same database.\nPurpose: hide complexity from users."],
+["What is the difference between schema and instance? What is physical data independence?","Schema = the overall structure of the database (like the type of a variable). Logical schema and physical schema.\nInstance = the actual data at one moment (like the value of a variable).\nPhysical data independence = change the physical schema without changing the logical schema. Applications depend only on the logical schema, so no redesign is needed when storage changes."],
+["Explain the database languages: DDL, DML, DCL, TCL, DQL with examples.","DDL: defines the structure. CREATE, ALTER, DROP, TRUNCATE, COMMENT, RENAME. Output goes to the data dictionary (metadata).\nDML: insert, update, delete data. INSERT, UPDATE, DELETE, MERGE, CALL. Called the query language when used for retrieval.\nDCL: access rights. GRANT, REVOKE.\nTCL: transactions. COMMIT, ROLLBACK, SAVEPOINT.\nDQL: retrieve data without changing it. SELECT."],
+["Compare procedural and declarative DML. Why is SQL not enough alone to build an application?","Procedural: user says what data is needed AND how to get it.\nDeclarative (non-procedural): user says only what is needed. Easier to learn. SQL is declarative.\nSQL is not Turing-equivalent. It cannot take user input, show output or use the network. So it is embedded in a host language (C/C++, Java, Python). SQL manages data, the language manages logic and interaction."],
+["Describe the database engine: storage manager, query processor and transaction manager.","Storage manager: interface between low-level data and programs. Parts: authorization and integrity manager, transaction manager, file manager, buffer manager. Structures: data files, data dictionary, indices.\nQuery processor: DDL interpreter, DML compiler (translates and optimizes to the lowest-cost plan), query evaluation engine. Steps: parsing and translation, optimization, evaluation.\nTransaction management: keeps the database consistent after failures; the concurrency-control manager controls concurrent transactions."],
+["Compare two-tier and three-tier architecture. Name database architectures.","Two-tier: the application runs at the client and calls the database system on the server.\nThree-tier: the client is only a front end with no direct database calls. It talks to an application server, which talks to the database.\nArchitectures: centralized (client-server), parallel (shared memory, shared disk, shared nothing), distributed (geographic distribution)."],
+["What does the DBA do?","Central control of the system: schema definition; storage structure and access-method definition; schema and physical organization changes; granting authorization; routine maintenance: backups, enough free disk space, monitoring jobs."],
+["Define data, DBMS, database. Give examples of relational and NoSQL DBMS and of data models.","Database system = interrelated data + programs to access it, in a convenient and efficient environment. DBMS = software to create, update, retrieve and secure data. Relational stores tables; NoSQL stores key-value pairs.\nRelational: MySQL, Oracle, SQL Server, PostgreSQL, Snowflake. NoSQL: MongoDB, Cassandra, DynamoDB, Redis.\nData models: relational, entity-relationship (design), object-based, semi-structured (XML); older: network, hierarchical."],
+["What is a data model? Name the models and explain the relational model.","A data model is a collection of conceptual tools to describe data, data relationships, data semantics and consistency constraints.\nModels: relational, entity-relationship (mainly for design), object-based (object-oriented and object-relational), semi-structured (XML). Older: network, hierarchical.\nRelational model: all data is stored in tables (columns = attributes, rows = tuples). Ted Codd defined it (Turing Award 1981)."],
+["What is the data dictionary and metadata? What do the DDL commands do?","Metadata = data about data. The data dictionary stores it: schema definitions, constraints, table properties. It is the output of the DDL compiler and is kept by the DBMS.\nDDL: CREATE (database and objects: table, index, view, procedure, function, trigger), ALTER (change structure), DROP (delete objects), TRUNCATE (remove all records), COMMENT, RENAME.\nDDL also specifies integrity constraints (primary key, foreign key, unique, not null, check) and authorization."],
+["List database applications and the purpose of database systems.","Applications: sales, accounting, HR, manufacturing, banking and finance, credit cards, universities (registration, grades), airlines, telecom, online retail and ads, document databases, navigation systems.\nPurpose: a database system manages data that is valuable, large and used by many users at the same time. It solves the file-system problems (redundancy, access, isolation, integrity, atomicity, concurrency, security)."],
+["Explain the three tasks of query processing and the role of the transaction manager. Why do we need transactions?","Query processing: 1) parsing and translation, 2) optimization (DML compiler picks the lowest-cost plan), 3) evaluation (query evaluation engine runs the plan).\nA transaction is a group of operations that does one logical function (e.g. a transfer). The transaction manager keeps the database consistent after power or OS failures, and the concurrency-control manager controls concurrent transactions. This gives atomicity."],
+["Summarize the history of database systems.","1950s-60s: magnetic tapes, sequential access, punched cards.\nLate 1960s-70s: hard disks, network and hierarchical models; Codd defines the relational model; System R (IBM), Ingres (Berkeley), first Oracle.\n1980s: relational systems become commercial; SQL becomes the standard; parallel, distributed and object-oriented databases.\n1990s: data mining, data warehouses, web commerce.\n2000s: big data, NoSQL, MapReduce. 2010s: SQL reloaded, massively parallel and main-memory databases."]
+];
+const SC=`Schemas used below:
+instructor(ID, name, dept_name, salary)   teaches(ID, course_id, sec_id, semester, year)
+section(course_id, sec_id, semester, year)   student(ID, name, dept_name, tot_cred)
+Employees(emp_id, name, salary, dept_id)  Departments(dept_id, dept_name)  Projects(proj_id, proj_name, emp_id)`;
+const CD=[
+["RA: Names of all instructors in the Physics department.","π name (σ dept_name='Physics' (instructor))"],
+["RA: Instructors in Physics with salary greater than 90000.","σ dept_name='Physics' ∧ salary>90000 (instructor)"],
+["RA: Course IDs taught in Fall 2017 or Spring 2018 (or both).","π course_id (σ semester='Fall' ∧ year=2017 (section)) ∪ π course_id (σ semester='Spring' ∧ year=2018 (section))"],
+["RA: Course IDs taught in both Fall 2017 and Spring 2018.","Same as above, but with ∩ instead of ∪."],
+["RA: Course IDs taught in Fall 2017 but not in Spring 2018.","π course_id (σ semester='Fall' ∧ year=2017 (section)) − π course_id (σ semester='Spring' ∧ year=2018 (section))"],
+["RA: Name of each instructor with the course_id they taught.","π name, course_id (σ instructor.ID=teaches.ID (instructor × teaches))\nor: π name, course_id (instructor ⋈ instructor.ID=teaches.ID teaches)"],
+["RA: All instructors in Physics and Music, using assignment.","Physics ← σ dept_name='Physics' (instructor)\nMusic ← σ dept_name='Music' (instructor)\nPhysics ∪ Music"],
+["RA: Create STUDENT_NAMES with ROLL_NO and NAME from STUDENT.","ρ(STUDENT_NAMES, π ROLL_NO, NAME (STUDENT))"],
+["RA (Assignment 1, Q3): Employees who work in the IT department.","π name (σ dept_name='IT' (Employees ⋈ Employees.dept_id=Departments.dept_id Departments))\nResult: Sara, Omar"],
+["RA (Q4): Employees with salary greater than 6000.","π name (σ salary>6000 (Employees))\nResult: Sara, Ahmed"],
+["RA (Q5): Employees and their project details.","Employees ⋈ Employees.emp_id=Projects.emp_id Projects"],
+["RA (Q6): Employees working on project Alpha.","π name (σ proj_name='Alpha' (Employees ⋈ Employees.emp_id=Projects.emp_id Projects))\nResult: Sara"],
+["RA (Q7 and Q8): What does π E1.dept_id (σ E1.dept_id=E2.dept_id ∧ E1.emp_id≠E2.emp_id (ρE1(Employees) × ρE2(Employees))) return? Then write the query for departments that have employees.","It returns departments with at least TWO employees: {1, 2}. Finance (3) has one employee, so it is missing. So it is NOT the answer for 'departments that have employees'.\nCorrect for Q7: π dept_id (Employees)  →  {1, 2, 3}"],
+["RA (Q9): Employees working on projects in the IT department.","π name (σ dept_name='IT' (Departments ⋈ Employees ⋈ Projects))\nResult: Sara, Omar"],
+["RA (Q10): Departments with no employees.","π dept_id (Departments) − π dept_id (Employees)\nResult: empty (all 3 departments have employees)"],
+["SQL: Create table department(dept_name, building, budget) then course with a primary key and a foreign key to department.","create table department (dept_name varchar(20), building varchar(15), budget numeric(12,2), primary key (dept_name));\ncreate table course (course_id varchar(8), title varchar(50), dept_name varchar(20), credits numeric(2,0), primary key (course_id), foreign key (dept_name) references department);"],
+["SQL (Sec 1, Task 1): Create COURSE and SECTION tables and insert one row in each.","CREATE TABLE COURSE (Course_name VARCHAR(30), Course_number VARCHAR(10), Credit_hours INT, Department VARCHAR(10));\nINSERT INTO COURSE VALUES ('Database','CS3380',3,'CS');\nCREATE TABLE SECTION (Section_identifier INT, Course_number VARCHAR(10), Semester VARCHAR(10), Year INT, Instructor VARCHAR(20));\nINSERT INTO SECTION VALUES (135,'CS3380','Fall',8,'Stone');"],
+["SQL: Add column address to student, change a name, delete a student, empty the table, remove the table.","ALTER TABLE student ADD (address VARCHAR(20));\nUPDATE student SET name='Sonoo' WHERE ID='3';\nDELETE FROM student WHERE ID='3';\nTRUNCATE TABLE student;   -- keeps the structure\nDROP TABLE student;       -- removes structure and rows"],
+["SQL: Give SELECT and UPDATE on MY_TABLE to USER1 and take them back. Then undo unsaved changes.","GRANT SELECT, UPDATE ON MY_TABLE TO USER1;\nREVOKE SELECT, UPDATE ON MY_TABLE FROM USER1;\nROLLBACK;   -- COMMIT saves"],
+["SQL: Names of instructors with salary between 90000 and 100000.","select name from instructor where salary between 90000 and 100000;\n-- same as: where salary >= 90000 and salary <= 100000"],
+["SQL: Names of instructors whose name contains 'dar', and names starting with 'Intro' or with exactly 3 letters.","select name from instructor where name like '%dar%';\nwhere name like 'Intro%'\nwhere name like '___'"],
+["SQL: Names of instructors and course_id they taught, only for the Art department.","select name, course_id\nfrom instructor, teaches\nwhere instructor.ID = teaches.ID and instructor.dept_name = 'Art';"],
+["SQL: Names of instructors who earn more than SOME instructor in Comp. Sci. (two ways).","select distinct T.name from instructor as T, instructor as S\nwhere T.salary > S.salary and S.dept_name = 'Comp. Sci.';\n\nselect name from instructor\nwhere salary > some (select salary from instructor where dept_name = 'Comp. Sci.');"],
+["SQL: Names of instructors who earn more than ALL instructors in Biology.","select name from instructor\nwhere salary > all (select salary from instructor where dept_name = 'Biology');"],
+["SQL: Names of instructors in alphabetical order, then by dept_name and salary descending.","select distinct name from instructor order by name;\nselect * from instructor order by dept_name, salary desc;"],
+["SQL: Average salary per department, only departments with average above 42000.","select dept_name, avg(salary) as avg_salary\nfrom instructor\ngroup by dept_name\nhaving avg(salary) > 42000;"],
+["SQL: How many different instructors taught in Spring 2018? How many rows in course?","select count(distinct ID) from teaches where semester='Spring' and year=2018;   -- 6\nselect count(*) from course;"],
+["SQL: Course IDs in Fall 2017 but not in Spring 2018 (set operation, then IN style).","(select course_id from section where semester='Fall' and year=2017)\nexcept\n(select course_id from section where semester='Spring' and year=2018);\n\nselect distinct course_id from section where semester='Fall' and year=2017\nand course_id not in (select course_id from section where semester='Spring' and year=2018);"],
+["SQL: Monthly salary of each instructor with the column renamed; and instructors with salary missing.","select ID, name, salary/12 as monthly_salary from instructor;\nselect name from instructor where salary is null;"],
+["SQL null trap: instructor(Ahmed 10000, Sara NULL, Ali 9000). Output of: (a) salary <> 9000  (b) salary <> 9000 and salary is null  (c) salary <> 9000 or salary is null","(a) Ahmed   (Sara gives unknown, treated as false)\n(b) empty   (no row can be <> 9000 and null)\n(c) Ahmed, Sara"],
+["SQL (Sec 1): Write INSERT, UPDATE and DELETE examples, and a SELECT with WHERE age > 20.","INSERT INTO STUDENT VALUES ('Ali','ali@mail.com');\nUPDATE students SET User_Name='Sonoo' WHERE Student_Id='3';\nDELETE FROM javatpoint WHERE Author='Sonoo';\nSELECT stu_name FROM student WHERE age > 20;"],
+["SQL: Find the supervisor of the supervisor of Bob. Relation emp_super(person, supervisor) (self join).","select S2.supervisor\nfrom emp_super as S1, emp_super as S2\nwhere S1.person = 'Bob' and S1.supervisor = S2.person;"],
+["SQL: Instructors whose name is neither Mozart nor Einstein; students who took sections taught by instructor 10101.","select distinct name from instructor where name not in ('Mozart','Einstein');\n\nselect count(distinct ID) from takes\nwhere (course_id, sec_id, semester, year) in\n  (select course_id, sec_id, semester, year from teaches where teaches.ID = 10101);"],
+["SQL: Average salary of Comp. Sci. instructors; highest and lowest salary; total of all salaries.","select avg(salary) from instructor where dept_name='Comp. Sci.';   -- 77333.33\nselect max(salary), min(salary), sum(salary) from instructor;"],
+["SQL: Fix the error: select dept_name, ID, avg(salary) from instructor group by dept_name;","ID is not in group by and not aggregated. Fix:\nselect dept_name, ID, avg(salary) from instructor group by dept_name, ID;\nor remove ID:\nselect dept_name, avg(salary) from instructor group by dept_name;"],
+["SQL: Show literals: select '437'; select '437' as FOO; select 'A' from instructor. What is returned?","select '437' → one row, one column with 437.\nas FOO → the column is named FOO.\nselect 'A' from instructor → N rows (one per instructor), each with A."],
+["SQL: Create instructor with ID primary key, name not null, and foreign key to department. Then create takes with a composite primary key.","create table instructor (ID char(5), name varchar(20) not null, dept_name varchar(20), salary numeric(8,2), primary key (ID), foreign key (dept_name) references department);\ncreate table takes (ID varchar(5), course_id varchar(8), sec_id varchar(8), semester varchar(6), year numeric(4,0), grade varchar(2), primary key (ID, course_id, sec_id, semester, year), foreign key (ID) references student, foreign key (course_id, sec_id, semester, year) references section);"],
+["RA (Lecture 3 exercise): employee(person_name, street, city), works(person_name, company_name, salary). Names of employees living in Miami; salary above 100000; both.","a) π person_name (σ city='Miami' (employee))\nb) π person_name (σ salary>100000 (works))\nc) π person_name (σ city='Miami' ∧ salary>100000 (employee ⋈ employee.person_name=works.person_name works))\n(c needs a join because city and salary are in different tables.)"],
+["RA: Find departments whose name is the same as their building name. Then show two equivalent queries for courses taught by Physics instructors.","σ dept_name=building (department)\n\nσ dept_name='Physics' (instructor ⋈ instructor.ID=teaches.ID teaches)\n(σ dept_name='Physics' (instructor)) ⋈ instructor.ID=teaches.ID teaches\nThe second filters first, so the join is smaller."],
+["RA: Find students (STUDENT) who are not employees (EMPLOYEE), using rename so the attributes match.","STUDENT − ρ(ROLL_NO, EMP_NO)(EMPLOYEE)\nUnion works the same: STUDENT ∪ ρ(ROLL_NO, EMP_NO)(EMPLOYEE). Both tables need the same arity and compatible types."],
+["RA: STUDENT has 4 rows and STUDENT_SPORTS has 4 rows. How many rows and columns does STUDENT × STUDENT_SPORTS have? STUDENT has 5 columns, STUDENT_SPORTS has 2.","Rows: 4 × 4 = 16. Columns: 5 + 2 = 7. Same attribute names are written with the relation name, like ROLL_NO(S) and ROLL_NO(SS))."],
+["SQL: Names of instructors in Biology with the courses they taught, written with a tuple comparison.","select name, course_id from instructor, teaches\nwhere (instructor.ID, dept_name) = (teaches.ID, 'Biology');\n-- result: Crick BIO-101, Crick BIO-301"]
+];
+const REF=`<h3>Lecture 1: Intro</h3><ul><li>DBMS = interrelated data + programs. Relational = tables; NoSQL = key-value.</li><li>File system problems: redundancy, hard access, isolation, integrity, atomicity, concurrency, security.</li><li>Levels: physical, logical, view. Schema = structure; instance = content. Physical data independence.</li><li>DDL (CREATE ALTER DROP TRUNCATE), DML (INSERT UPDATE DELETE MERGE), DCL (GRANT REVOKE), TCL (COMMIT ROLLBACK SAVEPOINT), DQL (SELECT).</li><li>Engine: storage manager, query processor (parse, optimize, evaluate), transaction manager. 2-tier vs 3-tier. DBA tasks.</li></ul>
+<h3>Lecture 2: Relational model and algebra</h3><ul><li>Relation = table; tuple = row; attribute = column. Cardinality = rows; degree = columns. NULL = unknown.</li><li>Superkey, candidate key (minimal), primary key, foreign key.</li><li>Six basic operators: σ select (rows), π project (columns, removes duplicates), ∪ union, − difference, × Cartesian product, ρ rename. Also ∩, ⋈ join = σ(r×s), ← assignment.</li><li>Union, intersection and difference need same arity and compatible domains. |r×s| = m×n.</li></ul>
+<h3>Lecture 3: SQL basics</h3><ul><li>Types: char, varchar, int, numeric(p,d), float.</li><li>create table with primary key, foreign key, not null. insert, delete, drop table, alter table add/drop.</li><li>select = π, from = ×, where = σ. distinct, *, as, arithmetic, self join with aliases, LIKE (% and _), order by (asc default).</li></ul>
+<h3>Lecture 4: SQL advanced</h3><ul><li>between; tuple comparison; union / intersect / except (remove duplicates; ALL keeps them).</li><li>NULL: use is null; comparisons give unknown; where treats unknown as false.</li><li>avg min max sum count; group by (select attributes must be in group by); having after groups, where before.</li><li>Subqueries: in / not in, some, all. (= some) = in; (&lt;&gt; all) = not in.</li></ul>
+<h3>Sections 1 and 2</h3><ul><li>Sec 1: database vs data vs information vs knowledge; SQL vs NoSQL; DDL, DML, DQL, DCL, TCL examples; primary and foreign keys; create COURSE and SECTION.</li><li>Sec 2: relational algebra operators, composition, equivalent queries, Assignment 1 (Q7 sample query returns departments with 2 or more employees).</li></ul>`;
+const $=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e};
+const V=document.getElementById('v'),N=document.getElementById('nav');
+let wrong=new Set();try{wrong=new Set(JSON.parse(localStorage.getItem('dbw')||'[]'))}catch(e){}
+const save=()=>{try{localStorage.setItem('dbw',JSON.stringify([...wrong]))}catch(e){}};
+const items=[...MC.map((m,i)=>({id:'m'+i,k:'mc',l:m[0],m})),...ES.map((m,i)=>({id:'e'+i,k:'es',l:1,m})),...CD.map((m,i)=>({id:'c'+i,k:'cd',l:0,m}))];
+const tabs=['Study','Test','Review','Reference'];let cur='Study';
+function nav(){N.innerHTML='';tabs.forEach(t=>{const b=$('button',t===cur?'on':'',t==='Review'?'Review ('+wrong.size+')':t);b.onclick=()=>{cur=t;nav();show()};N.append(b)})}
+function show(){V.innerHTML='';({Study:study,Test:testSetup,Review:review,Reference:ref})[cur]()}
+function filt(sel){return items.filter(i=>sel==='all'||(sel==='es'&&i.k==='es')||(sel==='cd'&&i.k==='cd')||(sel==='mc'&&i.k==='mc')||(i.k==='mc'&&sel==='L'+i.l))}
+const opts='<option value="all">Everything</option><option value="mc">All MCQ</option><option value="L1">MCQ Lecture 1</option><option value="L2">MCQ Lecture 2</option><option value="L3">MCQ Lecture 3</option><option value="L4">MCQ Lecture 4</option><option value="es">Essay (Lecture 1)</option><option value="cd">SQL and Algebra code</option>';
+function card(i,answer){const c=$('div','card');const m=i.m;
+ if(i.k==='mc'){c.append($('div','tag','MCQ · Lecture '+i.l),$('div','q',m[1]));m[2].forEach((o,j)=>c.append($('div','opt'+(j===m[3]&&answer?' ok':''),'ABCD'[j]+') '+o)));c.append($('div','why','Answer: '+'ABCD'[m[3]]+'. '+m[4]))}
+ else{c.append($('div','tag',i.k==='es'?'Essay · Lecture 1':'Code'),$('div','q',m[0]));if(i.k==='cd'&&m[0].indexOf('Employees')<0)c.append($('div','tag','See schemas on the Reference tab'));
+  const a=$('pre','hide',m[1]);if(i.k==='es')a.style.whiteSpace='pre-wrap';const r=$('div','row'),b=$('button','btn','Show answer');b.onclick=()=>{a.classList.toggle('hide');b.textContent=a.classList.contains('hide')?'Show answer':'Hide answer'};
+  const x=$('button','btn','I missed it');x.onclick=()=>{wrong.add(i.id);save();nav();x.textContent='Added to Review'};r.append(b,x);c.append(r,a)}
+ return c}
+function study(){const s=$('select');s.innerHTML=opts;const box=$('div');const go=()=>{box.innerHTML='';const l=filt(s.value);box.append($('div','tag',l.length+' questions'));l.forEach(i=>box.append(card(i,true)))};s.onchange=go;V.append(s,box);go()}
+function testSetup(){V.append($('div','tag','Choose what to test'));const s=$('select');s.innerHTML=opts.replace('<option value="es">Essay (Lecture 1)</option><option value="cd">SQL and Algebra code</option>','');const b=$('button','btn p','Start test (MCQ)');b.onclick=()=>runTest(filt(s.value).filter(i=>i.k==='mc'));V.append(s,$('div'),b,$('div','why','Essay and code questions are in Study. Use "I missed it" there to save them to Review.'))}
+function runTest(list){V.innerHTML='';list=[...list].sort(()=>Math.random()-.5);if(!list.length){V.append($('div','why','No questions here.'));return}
+ const ans={};list.forEach(i=>{const c=$('div','card');c.append($('div','tag','Lecture '+i.l),$('div','q',i.m[1]));const bs=[];i.m[2].forEach((o,j)=>{const b=$('button','opt','ABCD'[j]+') '+o);b.onclick=()=>{ans[i.id]=j;bs.forEach(x=>x.classList.remove('sel'));b.classList.add('sel')};bs.push(b);c.append(b)});i.bs=bs;i.card=c;V.append(c)});
+ const f=$('button','btn p','Finish and check');f.onclick=()=>{let ok=0;list.forEach(i=>{const a=ans[i.id],r=i.m[3];i.bs.forEach((b,j)=>{b.disabled=true;if(j===r)b.classList.add('ok');else if(j===a)b.classList.add('no')});if(a===r){ok++;wrong.delete(i.id)}else wrong.add(i.id);i.card.append($('div','why',(a===undefined?'No answer. ':'')+i.m[4]))});save();nav();const s=$('div','card');s.append($('div','sc',ok+' / '+list.length),$('div','why','Wrong answers were saved in Review.'));V.prepend(s);scrollTo(0,0);f.remove()};V.append(f)}
+function review(){if(!wrong.size){V.append($('div','card','Nothing to review yet. Wrong answers from tests and “I missed it” items appear here.'));return}
+ const l=items.filter(i=>wrong.has(i.id)),r=$('div','row'),p=$('button','btn p','Test me on the wrong MCQs'),c=$('button','btn','Clear list');p.onclick=()=>runTest(l.filter(i=>i.k==='mc'));c.onclick=()=>{wrong.clear();save();nav();show()};r.append(p,c);V.append(r);l.forEach(i=>V.append(card(i,true)))}
+function ref(){const d=$('div','card ref');d.innerHTML='<pre>'+SC.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</pre>'+REF;V.append(d)}
+nav();show();
+</script></main></body></html>
